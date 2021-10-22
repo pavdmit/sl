@@ -7,7 +7,6 @@ from database import *
 from functools import partial
 from pathlib import Path
 
-
 '''def resize_window(window_widget, table):
     tableWidth = 40
     for i in range(table.columnCount()):
@@ -111,15 +110,18 @@ class Account(QMainWindow):
 
         # Initial window settings
         team_names = get_team_names(user_id)
+        self.team_name = team_names[0]
         self.team_names_cb.addItems(team_names)
-        self.team_picture.setText(team_names[0][0])
+        self.team_picture.setText(self.team_name[0])
         workflow_names = get_team_workflows(team_names[0])
+        self.workspace_name = workflow_names[0]
         self.workspace_names_cb.addItems(workflow_names)
-        self.workspace_picture.setText(workflow_names[0][0])
+        self.workspace_picture.setText(self.workspace_name[0])
         fill_members(self.members_table, team_names[0])
 
-        # Changing team
-        # self.team_names_cb.activated[str].connect(change_team(self.team_names_cb)
+        # Changing workflow and team if changed
+        self.team_names_cb.activated[str].connect(self.change_session_settings)
+        self.workspace_names_cb.activated[str].connect(self.change_session_settings)
 
         # Changing workspace window
         bottom_margin = 100
@@ -153,6 +155,12 @@ class Account(QMainWindow):
         self.widget2.addWidget(self.TableWindow)
         resize_window(self.widget2, self.TableWindow.table)
         self.widget2.show()'''
+
+    def change_session_settings(self):
+        self.team_name = self.team_names_cb.currentText()
+        self.workspace_name = self.workspace_names_cb.currentText()
+        self.team_picture.setText(self.team_name[0])
+        self.workspace_picture.setText(self.workspace_name[0])
 
     @staticmethod
     def sign_out():

@@ -35,7 +35,7 @@ def connect():
     return config
 
 
-engine = create_engine(connect())
+engine = create_engine("postgresql://postgres:@localhost/dataset_marker")
 
 
 def user_authorisation(login, password):
@@ -80,14 +80,6 @@ def fill_members(table_obj, team_name):
         k += 1
     table_obj.verticalHeader().setVisible(False)
     table_obj.resizeColumnsToContents()
-
-
-def change_team(combobox):
-    pass
-
-
-def change_workflow(combobox):
-    pass
 
 
 def get_user_teams():
