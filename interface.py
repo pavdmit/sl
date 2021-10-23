@@ -27,8 +27,8 @@ class Login(QDialog):
         loadUi(path_to_ui, self)
         self.login_btn.clicked.connect(self.login_function)
         self.signup_btn.clicked.connect(self.sign_up)
-        self.sign_in_dialog = ""
-        self.dialog_widget = ""
+        self.sign_in_dialog = None
+        self.dialog_widget = None
         # pixmap = QPixmap('background.png')
         # self.label.setPixmap(pixmap)
         # self.label.update()
@@ -60,6 +60,13 @@ class Login(QDialog):
         path_to_ui = Path(Path.cwd(), 'uis', 'table.ui')
         loadUi(path_to_ui, self)
         fill_table(self.table, table_name)'''
+
+
+class ImagesLabelWindow(QWidget):
+    def __init__(self):
+        super(ImagesLabelWindow, self).__init__()
+        path_to_ui = Path(Path.cwd(), 'uis', 'images_label_window.ui')
+        loadUi(path_to_ui, self)
 
 
 class PlainWidget:
@@ -107,35 +114,28 @@ class Account(QMainWindow):
         path_to_ui = Path(Path.cwd(), 'uis', 'main_window.ui')
         loadUi(path_to_ui, self)
         self.user_id = user_id
+        self.label_window = None
+        self.window_widget = None
 
         # Initial window settings
         team_names = get_team_names(user_id)
         self.team_name = team_names[0]
         self.team_names_cb.addItems(team_names)
         self.team_picture.setText(self.team_name[0])
-        workflow_names = get_team_workflows(team_names[0])
-        self.workspace_name = workflow_names[0]
-        self.workspace_names_cb.addItems(workflow_names)
+        self.workflow_names = get_team_workflows(team_names[0])
+        self.workspace_name = self.workflow_names[0]
+        self.workspace_names_cb.addItems(self.workflow_names)
         self.workspace_picture.setText(self.workspace_name[0])
-        fill_members(self.members_table, team_names[0])
+        fill_members(self.members_table, self.team_name)
+        fill_projects(self.datasets_table, self.workspace_name)
+        self.datasets_table.selectionModel().selectionChanged.connect(self.open_editor)
 
         # Changing workflow and team if changed
         self.team_names_cb.activated[str].connect(self.change_session_settings)
         self.workspace_names_cb.activated[str].connect(self.change_session_settings)
 
         # Changing workspace window
-        bottom_margin = 100
-        count = 0
-        for i in range((len(workflow_names) // 3) + 1):
-            left_margin = 25
-            for j in range(3):
-                plain_widget = PlainWidget(self.workspaces_page, workflow_names[count], [left_margin, bottom_margin],
-                                           self.stackedWidget, self.projects_page)
-                left_margin += 255
-                count += 1
-                if count >= len(workflow_names):
-                    break
-            bottom_margin += 185
+        self.fill_workspaces()
 
         # Pages buttons
         self.workspaces_btn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.workspaces_page))
@@ -156,11 +156,35 @@ class Account(QMainWindow):
         resize_window(self.widget2, self.TableWindow.table)
         self.widget2.show()'''
 
+    # move to database
+    def fill_workspaces(self):
+        bottom_margin = 100
+        count = 0
+        for i in range((len(self.workflow_names) // 3) + 1):
+            left_margin = 25
+            for j in range(3):
+                plain_widget = PlainWidget(self.workspaces_page, self.workflow_names[count], [left_margin, bottom_margin],
+                                           self.stackedWidget, self.projects_page)
+                left_margin += 255
+                count += 1
+                if count >= len(self.workflow_names):
+                    break
+            bottom_margin += 185
+
+    def open_editor(self):
+        self.label_window = ImagesLabelWindow()
+        self.window_widget = QtWidgets.QStackedWidget()
+        self.window_widget.addWidget(self.label_window)
+        self.window_widget.show()
+
     def change_session_settings(self):
         self.team_name = self.team_names_cb.currentText()
         self.workspace_name = self.workspace_names_cb.currentText()
         self.team_picture.setText(self.team_name[0])
         self.workspace_picture.setText(self.workspace_name[0])
+        fill_members(self.members_table, self.team_name)
+        fill_projects(self.datasets_table, self.workspace_name)
+        self.fill_workspaces()
 
     @staticmethod
     def sign_out():

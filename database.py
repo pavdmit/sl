@@ -82,6 +82,23 @@ def fill_members(table_obj, team_name):
     table_obj.resizeColumnsToContents()
 
 
+def fill_projects(table_obj, workspace_name):
+    cur.execute("SELECT dataset_name, task_type, description FROM datasets_description WHERE dataset_name in (select "
+                "dataset_name from dataset_to_workspace where workspace_name = '{}')".format(workspace_name))
+    datasets = cur.fetchall()
+    print(datasets)
+    table_obj.setColumnCount(len(datasets[0]))
+    table_obj.setHorizontalHeaderLabels(['Dataset name', 'Task type', 'Description'])
+    table_obj.setRowCount(len(datasets))
+    k = 0
+    for row in datasets:
+        for i in range(len(row)):
+            table_obj.setItem(k, i, QTableWidgetItem(str(row[i])))
+        k += 1
+    table_obj.verticalHeader().setVisible(False)
+    table_obj.resizeColumnsToContents()
+
+
 def get_user_teams():
     pass
 
