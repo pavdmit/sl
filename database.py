@@ -6,6 +6,7 @@ from sqlalchemy import BigInteger, Column, ForeignKey, LargeBinary, String, Text
 from sqlalchemy.orm import relationship
 from pathlib import Path
 import psycopg2
+from random import randint
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -38,13 +39,21 @@ def connect():
 engine = create_engine("postgresql://postgres:@localhost/dataset_marker")
 
 
+def register(email, password, first_name, phone_number, last_name, gender):
+    cur.execute("INSERT INTO users VALUES ('{}','{}','{}','{}','{}','{}','{}')".format(email, first_name, phone_number,
+                                                                                       last_name, gender,
+                                                                                       str(randint(100, 200)),
+                                                                                       password))
+
+    con.commit()
+
+
 def user_authorisation(login, password):
     Session = sessionmaker(bind=engine)
     session = Session()
     authorisation_params = {'email': login, 'password': password}
     output_query = session.query(globals()['User']).filter_by(**authorisation_params)
     authorised = False
-    # psycopg script
     cur.execute("SELECT id FROM users WHERE email = '{}'".format(login))
     user_id = cur.fetchall()
     for element in output_query:
@@ -86,7 +95,6 @@ def fill_projects(table_obj, workspace_name):
     cur.execute("SELECT dataset_name, task_type, description FROM datasets_description WHERE dataset_name in (select "
                 "dataset_name from dataset_to_workspace where workspace_name = '{}')".format(workspace_name))
     datasets = cur.fetchall()
-    print(datasets)
     table_obj.setColumnCount(len(datasets[0]))
     table_obj.setHorizontalHeaderLabels(['Dataset name', 'Task type', 'Description'])
     table_obj.setRowCount(len(datasets))

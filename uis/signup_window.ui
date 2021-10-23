@@ -71,7 +71,7 @@ border-bottom-right-radius: 10px 10px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 13pt &quot;Andale Mono&quot;;
+     <string notr="true">font: 15pt &quot;Andale Mono&quot;;
 color:rgb(43,59,78);</string>
     </property>
     <property name="text">
@@ -95,7 +95,7 @@ color:rgb(43,59,78);</string>
       <number>0</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="email_input_line">
        <property name="mouseTracking">
         <bool>false</bool>
        </property>
@@ -104,57 +104,57 @@ color:rgb(43,59,78);</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-	border: 1px solid rgb(240, 243, 246);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:10px
 }</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="password_input_line">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-	border: 1px solid rgb(240, 243, 246);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:10px
 }</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_5">
+      <widget class="QLineEdit" name="fname_input_line">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-	border: 1px solid rgb(240, 243, 246);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:10px
 }</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_6">
+      <widget class="QLineEdit" name="phnumber_input_line">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-	border: 1px solid rgb(240, 243, 246);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:10px
 }</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_4">
+      <widget class="QLineEdit" name="lname_input_line">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-	border: 1px solid rgb(240, 243, 246);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:10px
 }</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_3">
+      <widget class="QLineEdit" name="gender_input_line">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-	border: 1px solid rgb(240, 243, 246);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:10px
 }</string>
        </property>
@@ -240,13 +240,13 @@ color:rgb(43,59,78);</string>
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="create_acc_btn">
     <property name="geometry">
      <rect>
       <x>130</x>
       <y>220</y>
       <width>113</width>
-      <height>20</height>
+      <height>25</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -294,7 +294,7 @@ border-bottom-left-radius: 10px 10px;</string>
       <x>10</x>
       <y>170</y>
       <width>141</width>
-      <height>20</height>
+      <height>25</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -303,7 +303,7 @@ border-bottom-left-radius: 10px 10px;</string>
 	color:rgb(243,247,254);
 	border: 1px solid rgb(255, 255, 255);
 	border-radius: 10px;
-	font: 8pt &quot;Andale Mono&quot;;
+	font: 9pt &quot;Andale Mono&quot;;
 }
 
 QPushButton:hover {

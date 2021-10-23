@@ -163,7 +163,8 @@ class Account(QMainWindow):
         for i in range((len(self.workflow_names) // 3) + 1):
             left_margin = 25
             for j in range(3):
-                plain_widget = PlainWidget(self.workspaces_page, self.workflow_names[count], [left_margin, bottom_margin],
+                plain_widget = PlainWidget(self.workspaces_page, self.workflow_names[count],
+                                           [left_margin, bottom_margin],
                                            self.stackedWidget, self.projects_page)
                 left_margin += 255
                 count += 1
@@ -199,6 +200,11 @@ class RegistrationWindow(QWidget):
         path_to_ui = Path(Path.cwd(), 'uis', 'signup_window.ui')
         loadUi(path_to_ui, self)
         self.ahacc_btn.clicked.connect(self.close_window)
+        self.create_acc_btn.clicked.connect(lambda:
+                                            register(self.email_input_line.text(), self.password_input_line.text(),
+                                                     self.fname_input_line.text(), self.phnumber_input_line.text(),
+                                                     self.lname_input_line.text(), self.gender_input_line.text()))
+        self.create_acc_btn.clicked.connect(self.close_window)
 
     @staticmethod
     def close_window():

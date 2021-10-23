@@ -51,8 +51,10 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
-border-radius:15px</string>
+    <string notr="true">QFrame {
+background-color: rgb(255, 255, 255);
+border-radius:15px
+}</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::NoFrame</enum>
@@ -74,7 +76,7 @@ border-radius:15px</string>
       <widget class="QLineEdit" name="email_input">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-	border:1px solid rgb(240,243,246);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:10px;
 	font: 13pt &quot;Andale Mono&quot;;
 	color:rgb(43,59,78);
@@ -86,11 +88,12 @@ border-radius:15px</string>
       <widget class="QLineEdit" name="password_input">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-	border:1px solid rgb(240,243,246);
+	border: 1px solid rgb(179, 179, 179);
 	border-radius:10px;
 	font: 13pt &quot;Andale Mono&quot;;
 	color:rgb(43,59,78);
-}</string>
+}
+</string>
        </property>
       </widget>
      </item>
