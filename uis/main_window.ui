@@ -445,7 +445,7 @@ QComboBox::drop-down
         </rect>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="team_page"/>
        <widget class="QWidget" name="workspaces_page">
@@ -802,14 +802,17 @@ QPushButton:hover {
           <rect>
            <x>20</x>
            <y>100</y>
-           <width>780</width>
-           <height>680</height>
+           <width>760</width>
+           <height>400</height>
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(243,247,254);
-font: 20pt &quot;Andale Mono&quot;;
-color:rgb(43,59,78);</string>
+          <string notr="true">background-color: rgb(127, 127, 127);
+color: rgb(230, 230, 230);
+font: 17pt &quot;Andale Mono&quot;;
+border-radius: 15px;
+
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -827,7 +830,7 @@ color:rgb(43,59,78);</string>
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
          <property name="showGrid">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </widget>
@@ -1095,20 +1098,26 @@ QPushButton:hover {
         <widget class="QTableWidget" name="datasets_table">
          <property name="geometry">
           <rect>
-           <x>5</x>
+           <x>20</x>
            <y>75</y>
-           <width>790</width>
-           <height>665</height>
+           <width>760</width>
+           <height>500</height>
           </rect>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(127, 127, 127);
-font: 20pt &quot;Andale Mono&quot;;
-color:rgb(43,59,78);
-border-radius: 15px;</string>
+color: rgb(230, 230, 230);
+font: 17pt &quot;Andale Mono&quot;;
+border-radius: 15px;
+
+
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
          </property>
          <property name="cornerButtonEnabled">
           <bool>false</bool>

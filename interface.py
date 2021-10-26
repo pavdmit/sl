@@ -54,19 +54,16 @@ class Login(QDialog):
         widget.setCurrentIndex(widget.currentIndex() + 1)
 
 
-'''class Table(QWidget):
-    def __init__(self, table_name):
-        super(Table, self).__init__()
-        path_to_ui = Path(Path.cwd(), 'uis', 'table.ui')
-        loadUi(path_to_ui, self)
-        fill_table(self.table, table_name)'''
-
-
 class ImagesLabelWindow(QWidget):
-    def __init__(self):
+    def __init__(self, dataset_name):
         super(ImagesLabelWindow, self).__init__()
         path_to_ui = Path(Path.cwd(), 'uis', 'images_label_window.ui')
         loadUi(path_to_ui, self)
+        fill_files_in_dataset(self.list_of_files, dataset_name)
+        self.list_of_files.setColumnWidth(0, 240)
+        self.list_of_files.selectionModel().selectionChanged.connect(
+            lambda: fill_file_params(self.list_of_files.currentItem().text(), self.x1_input, self.y1_input,
+                                     self.x2_input, self.y2_input, self.class_input))
 
 
 class PlainWidget:
@@ -128,7 +125,11 @@ class Account(QMainWindow):
         self.workspace_picture.setText(self.workspace_name[0])
         fill_members(self.members_table, self.team_name)
         fill_projects(self.datasets_table, self.workspace_name)
-        self.datasets_table.selectionModel().selectionChanged.connect(self.open_editor)
+        self.datasets_table.setColumnWidth(0, 250)
+        self.datasets_table.setColumnWidth(1, 250)
+        self.datasets_table.setColumnWidth(2, 259)
+        self.datasets_table.selectionModel().selectionChanged.connect(
+            lambda: self.open_editor(self.datasets_table.currentItem().text()))
 
         # Changing workflow and team if changed
         self.team_names_cb.activated[str].connect(self.change_session_settings)
@@ -172,8 +173,8 @@ class Account(QMainWindow):
                     break
             bottom_margin += 185
 
-    def open_editor(self):
-        self.label_window = ImagesLabelWindow()
+    def open_editor(self, dataset_name):
+        self.label_window = ImagesLabelWindow(dataset_name)
         self.window_widget = QtWidgets.QStackedWidget()
         self.window_widget.addWidget(self.label_window)
         self.window_widget.show()

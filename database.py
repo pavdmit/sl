@@ -48,6 +48,21 @@ def register(email, password, first_name, phone_number, last_name, gender):
     con.commit()
 
 
+def fill_files_in_dataset(table_obj, dataset_name):
+    cur.execute("SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}'".format(dataset_name))
+    file_names = cur.fetchall()
+    table_obj.setColumnCount(len(file_names[0]))
+    table_obj.setHorizontalHeaderLabels(['File names'])
+    table_obj.setRowCount(len(file_names))
+    k = 0
+    for row in file_names:
+        for i in range(len(row)):
+            table_obj.setItem(k, i, QTableWidgetItem(str(row[i])))
+        k += 1
+    table_obj.verticalHeader().setVisible(False)
+    # table_obj.resizeColumnsToContents()
+
+
 def user_authorisation(login, password):
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -73,6 +88,17 @@ def get_team_workflows(current_team):
     workflow_names = cur.fetchall()
     workflow_names = [workflow_names[i][0] for i in range(len(workflow_names))]
     return workflow_names
+
+
+def fill_file_params(file_name, x1_input, y1_input, x2_input, y2_input, class_input):
+    cur.execute("SELECT x1, y1, x2, y2, class FROM image_datasets WHERE file_name = '{}'".format(file_name))
+    file_params = cur.fetchall()
+    file_params = [file_params[0][i] for i in range(len(file_params[0]))]
+    x1_input.setText(str(file_params[0]))
+    y1_input.setText(str(file_params[1]))
+    x2_input.setText(str(file_params[2]))
+    y2_input.setText(str(file_params[3]))
+    class_input.setText(str(file_params[4]))
 
 
 def fill_members(table_obj, team_name):
