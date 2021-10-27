@@ -445,7 +445,7 @@ QComboBox::drop-down
         </rect>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="team_page"/>
        <widget class="QWidget" name="workspaces_page">
@@ -592,7 +592,7 @@ QPushButton:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_18">
+             <widget class="QPushButton" name="edit_btn1">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -661,7 +661,7 @@ color:rgb(43,59,78);</string>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_11">
+           <widget class="QPushButton" name="invite_btn">
             <property name="minimumSize">
              <size>
               <width>40</width>
@@ -767,7 +767,7 @@ QPushButton:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_13">
+             <widget class="QPushButton" name="edit_btn2">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -923,7 +923,7 @@ QPushButton:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_19">
+             <widget class="QPushButton" name="edit_btn3">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -1065,7 +1065,7 @@ QPushButton:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_20">
+             <widget class="QPushButton" name="edit_btn4">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -1268,7 +1268,7 @@ QPushButton:hover {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_21">
+             <widget class="QPushButton" name="edit_btn5">
               <property name="minimumSize">
                <size>
                 <width>0</width>

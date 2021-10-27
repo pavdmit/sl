@@ -7,18 +7,6 @@ from database import *
 from functools import partial
 from pathlib import Path
 
-'''def resize_window(window_widget, table):
-    tableWidth = 40
-    for i in range(table.columnCount()):
-        tableWidth += table.columnWidth(i)
-    tableHight = 30 * table.rowCount()
-    if tableHight > 800:
-        tableHight = 800
-    # window_widget.resize(tableWidth, tableHight)
-    window_widget.setFixedWidth(tableWidth)
-    window_widget.setFixedHeight(tableHight)
-    return tableWidth, tableHight'''
-
 
 class Login(QDialog):
     def __init__(self):
@@ -64,6 +52,38 @@ class ImagesLabelWindow(QWidget):
         self.list_of_files.selectionModel().selectionChanged.connect(
             lambda: fill_file_params(self.list_of_files.currentItem().text(), self.x1_input, self.y1_input,
                                      self.x2_input, self.y2_input, self.class_input))
+
+
+class TextLabelWindow(QWidget):
+    def __init__(self, dataset_name):
+        super(TextLabelWindow, self).__init__()
+        path_to_ui = Path(Path.cwd(), 'uis', 'texts_label_window.ui')
+        loadUi(path_to_ui, self)
+
+
+class InviteWindow(QWidget):
+    def __init__(self, team_name):
+        super(InviteWindow, self).__init__()
+        path_to_ui = Path(Path.cwd(), 'uis', 'invite_dialog.ui')
+        loadUi(path_to_ui, self)
+
+
+class EditAccountWindow(QWidget):
+    def __init__(self, user_id):
+        super(EditAccountWindow, self).__init__()
+        path_to_ui = Path(Path.cwd(), 'uis', 'edit_account.ui')
+        loadUi(path_to_ui, self)
+        account_data = load_user_account(user_id)
+        self.email_edit_line.setText(account_data[0])
+        self.password_edit_line.setText(account_data[5])
+        self.fname_edit_line.setText(account_data[1])
+        self.phnumber_edit_line.setText(account_data[2])
+        self.lname_edit_line.setText(account_data[3])
+        self.gender_edit_line.setText(account_data[4])
+        self.save_changes_btn.clicked.connect(
+            lambda: save_account_changes(user_id, self.email_edit_line, self.password_edit_line,
+                                         self.fname_edit_line, self.phnumber_edit_line, self.lname_edit_line,
+                                         self.gender_edit_line))
 
 
 class PlainWidget:
@@ -113,6 +133,8 @@ class Account(QMainWindow):
         self.user_id = user_id
         self.label_window = None
         self.window_widget = None
+        self.edit_window = None
+        self.invite_window = None
 
         # Initial window settings
         team_names = get_team_names(user_id)
@@ -128,9 +150,11 @@ class Account(QMainWindow):
         self.datasets_table.setColumnWidth(0, 250)
         self.datasets_table.setColumnWidth(1, 250)
         self.datasets_table.setColumnWidth(2, 259)
+        self.members_table.setColumnWidth(0, 190)
+        self.members_table.setColumnWidth(1, 190)
+        self.members_table.setColumnWidth(2, 379)
         self.datasets_table.selectionModel().selectionChanged.connect(
             lambda: self.open_editor(self.datasets_table.currentItem().text()))
-
         # Changing workflow and team if changed
         self.team_names_cb.activated[str].connect(self.change_session_settings)
         self.workspace_names_cb.activated[str].connect(self.change_session_settings)
@@ -149,15 +173,13 @@ class Account(QMainWindow):
         self.signout_btn3.clicked.connect(self.sign_out)
         self.signout_btn4.clicked.connect(self.sign_out)
         self.signout_btn5.clicked.connect(self.sign_out)
+        self.edit_btn1.clicked.connect(self.edit_account)
+        self.edit_btn2.clicked.connect(self.edit_account)
+        self.edit_btn3.clicked.connect(self.edit_account)
+        self.edit_btn4.clicked.connect(self.edit_account)
+        self.edit_btn5.clicked.connect(self.edit_account)
+        self.invite_btn.clicked.connect(self.invite_user)
 
-    '''def show_table(self, table_name=None):
-        self.TableWindow = Table(table_name)
-        self.widget2 = QtWidgets.QStackedWidget()
-        self.widget2.addWidget(self.TableWindow)
-        resize_window(self.widget2, self.TableWindow.table)
-        self.widget2.show()'''
-
-    # move to database
     def fill_workspaces(self):
         bottom_margin = 100
         count = 0
@@ -173,10 +195,29 @@ class Account(QMainWindow):
                     break
             bottom_margin += 185
 
-    def open_editor(self, dataset_name):
-        self.label_window = ImagesLabelWindow(dataset_name)
+    def edit_account(self):
+        self.edit_window = EditAccountWindow(self.user_id)
         self.window_widget = QtWidgets.QStackedWidget()
-        self.window_widget.addWidget(self.label_window)
+        self.window_widget.addWidget(self.edit_window)
+        self.window_widget.show()
+
+    def open_editor(self, dataset_name):
+        task_type = which_task_type(dataset_name)
+        if task_type == 'image_classification':
+            self.label_window = ImagesLabelWindow(dataset_name)
+            self.window_widget = QtWidgets.QStackedWidget()
+            self.window_widget.addWidget(self.label_window)
+            self.window_widget.show()
+        elif task_type == 'text_classification':
+            self.label_window = TextLabelWindow(dataset_name)
+            self.window_widget = QtWidgets.QStackedWidget()
+            self.window_widget.addWidget(self.label_window)
+            self.window_widget.show()
+
+    def invite_user(self):
+        self.invite_window = InviteWindow(self.team_name)
+        self.window_widget = QtWidgets.QStackedWidget()
+        self.window_widget.addWidget(self.invite_window)
         self.window_widget.show()
 
     def change_session_settings(self):
@@ -219,10 +260,6 @@ class SignInDialog(QDialog):
         super(SignInDialog, self).__init__()
         path_to_ui = Path(Path.cwd(), 'uis', 'dialog_window.ui')
         loadUi(path_to_ui, self)
-        # self.ok_btn.clicked.connect(self.close_window)
-
-    def close_window(self):
-        pass
 
 
 app = QApplication(sys.argv)

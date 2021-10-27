@@ -60,7 +60,7 @@ color:rgb(43,59,78);</string>
      <string>Such user doesn't exist!</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="ok_btn">
     <property name="geometry">
      <rect>
       <x>200</x>

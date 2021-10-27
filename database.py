@@ -48,9 +48,33 @@ def register(email, password, first_name, phone_number, last_name, gender):
     con.commit()
 
 
+def load_user_account(user_id):
+    cur.execute("SELECT email, first_name, phone_number, last_name, gender, password FROM users WHERE id = '{}'".format(
+        user_id))
+    account_data = cur.fetchall()
+    account_data = [account_data[0][i] for i in range(len(account_data[0]))]
+    return account_data
+
+
+def save_account_changes(user_id, email_edit_line, password_edit_line, fname_edit_line, phnumber_edit_line,
+                         lname_edit_line, gender_edit_line):
+    email = str(email_edit_line.text())
+    password = str(password_edit_line.text())
+    first_name = str(fname_edit_line.text())
+    phone_number = str(phnumber_edit_line.text())
+    last_name = str(lname_edit_line.text())
+    gender = str(gender_edit_line.text())
+    cur.execute("UPDATE users SET email='{}', first_name='{}', phone_number='{}', last_name='{}', gender='{}', "
+                "password= '{}' WHERE id='{}'".format(email, first_name, phone_number, last_name, gender, password,
+                                                      user_id))
+    con.commit()
+
+
 def fill_files_in_dataset(table_obj, dataset_name):
     cur.execute("SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}'".format(dataset_name))
     file_names = cur.fetchall()
+    if len(file_names) == 0:
+        file_names.append(("No files",))
     table_obj.setColumnCount(len(file_names[0]))
     table_obj.setHorizontalHeaderLabels(['File names'])
     table_obj.setRowCount(len(file_names))
@@ -60,7 +84,13 @@ def fill_files_in_dataset(table_obj, dataset_name):
             table_obj.setItem(k, i, QTableWidgetItem(str(row[i])))
         k += 1
     table_obj.verticalHeader().setVisible(False)
-    # table_obj.resizeColumnsToContents()
+
+
+def which_task_type(dataset_name):
+    cur.execute("SELECT task_type FROM datasets_description WHERE dataset_name = '{}'".format(dataset_name))
+    task_type = cur.fetchall()
+    task_type = task_type[0][0]
+    return task_type
 
 
 def user_authorisation(login, password):
@@ -114,7 +144,6 @@ def fill_members(table_obj, team_name):
             table_obj.setItem(k, i, QTableWidgetItem(str(row[i])))
         k += 1
     table_obj.verticalHeader().setVisible(False)
-    table_obj.resizeColumnsToContents()
 
 
 def fill_projects(table_obj, workspace_name):
@@ -130,15 +159,6 @@ def fill_projects(table_obj, workspace_name):
             table_obj.setItem(k, i, QTableWidgetItem(str(row[i])))
         k += 1
     table_obj.verticalHeader().setVisible(False)
-    table_obj.resizeColumnsToContents()
-
-
-def get_user_teams():
-    pass
-
-
-def change_team():
-    pass
 
 
 def fill_table(table_obj, table_name):
