@@ -43,29 +43,10 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QLabel" name="text">
-    <property name="geometry">
-     <rect>
-      <x>35</x>
-      <y>35</y>
-      <width>440</width>
-      <height>720</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:15px;
-background-color: rgb(255, 255, 255);
-font: 22pt &quot;Andale Mono&quot;;
-color:rgb(255,255,255);</string>
-    </property>
-    <property name="text">
-     <string>TextLabelaeidijeuuwguiweafjenufiorahgoe</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>600</x>
       <y>560</y>
       <width>191</width>
       <height>121</height>
@@ -77,7 +58,8 @@ color:rgb(255,255,255);</string>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
-	border-radius:10px
+	border-radius:10px;
+	color:rgb(43,59,78);
 }</string>
        </property>
       </widget>
@@ -87,7 +69,8 @@ color:rgb(255,255,255);</string>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
-	border-radius:10px
+	border-radius:10px;
+	color:rgb(43,59,78);
 }</string>
        </property>
       </widget>
@@ -97,16 +80,16 @@ color:rgb(255,255,255);</string>
    <widget class="QTableWidget" name="list_of_labels">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>35</y>
-      <width>256</width>
-      <height>501</height>
+      <x>505</x>
+      <y>100</y>
+      <width>270</width>
+      <height>431</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(127, 127, 127);
 color: rgb(230, 230, 230);
-font: 17pt &quot;Andale Mono&quot;;
+font: 14pt &quot;Andale Mono&quot;;
 border-radius: 15px;
 
 
@@ -123,14 +106,14 @@ border-radius: 15px;
     <property name="geometry">
      <rect>
       <x>480</x>
-      <y>710</y>
+      <y>680</y>
       <width>301</width>
       <height>51</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="addnew_btn">
+      <widget class="QPushButton" name="delete_btn">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -152,7 +135,7 @@ QPushButton:hover {
 }</string>
        </property>
        <property name="text">
-        <string>Add new</string>
+        <string>Delete</string>
        </property>
       </widget>
      </item>
@@ -218,6 +201,107 @@ color:rgb(43,59,78);</string>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>50</y>
+      <width>271</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QComboBox" name="texts_list">
+       <property name="minimumSize">
+        <size>
+         <width>180</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+	border: 1px solid rgb(179, 179, 179);
+	border-radius: 5px;
+	font: 13pt &quot;Andale Mono&quot;;
+	color:rgb(43,59,78);
+}
+
+QComboBox::drop-down 
+{
+    border: 0px;
+}</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addnew_btn">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color: rgb(59, 146, 212);
+	color:rgb(243,247,254);
+	border: 0px solid;
+	border-radius: 12px;
+	font: 13pt &quot;Andale Mono&quot;;
+}
+
+QPushButton:hover {
+	background-color: rgb(243,247,254);
+	color:rgb(59, 146, 212);
+}</string>
+       </property>
+       <property name="text">
+        <string>Add new</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTextBrowser" name="text">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>420</width>
+      <height>700</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+border-radius:15px;
+font: 10pt &quot;Andale Mono&quot;;
+color:rgb(43,59,78);</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>30</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 13pt &quot;Andale Mono&quot;;
+color:rgb(43,59,78);</string>
+    </property>
+    <property name="text">
+     <string>Text name:</string>
+    </property>
    </widget>
   </widget>
  </widget>

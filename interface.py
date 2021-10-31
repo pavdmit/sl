@@ -59,6 +59,17 @@ class TextLabelWindow(QWidget):
         super(TextLabelWindow, self).__init__()
         path_to_ui = Path(Path.cwd(), 'uis', 'texts_label_window.ui')
         loadUi(path_to_ui, self)
+        self.current_file = fill_text_label_elements(self.texts_list, self.list_of_labels, self.text, dataset_name)
+        self.save_btn.clicked.connect(lambda: save_text_label(self.current_file, self.text_fragment_input,
+                                                              self.label_input))
+        self.save_btn.clicked.connect(lambda: fill_text_label_elements(self.texts_list, self.list_of_labels, self.text,
+                                                                       dataset_name))
+        self.addnew_btn.clicked.connect(add_text_label)
+        self.list_of_labels.setColumnWidth(0, 170)
+        self.list_of_labels.setColumnWidth(1, 100)
+        self.delete_btn.clicked.connect(lambda: delete_text_label(self.list_of_labels.currentItem().text()))
+        self.delete_btn.clicked.connect(lambda: fill_text_label_elements(self.texts_list, self.list_of_labels, self.text,
+                                                                         dataset_name))
 
 
 class InviteWindow(QWidget):

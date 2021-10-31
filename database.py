@@ -43,6 +43,49 @@ def save_account_changes(user_id, email_edit_line, password_edit_line, fname_edi
     con.commit()
 
 
+def fill_text_label_elements(texts_list, list_of_labels, text_label, dataset_name):
+    cur.execute("SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}'".format(dataset_name))
+    file_names = cur.fetchall()
+    file_names = [file_names[i][0] for i in range(len(file_names))]
+    texts_list.clear()
+    texts_list.addItems(file_names)
+    cur.execute("SELECT text_fragment, label FROM text_files WHERE file_name = '{}'".format(file_names[0]))
+    label_with_text = cur.fetchall()
+    if len(label_with_text) == 0:
+        file_names.append(("No files", " "))
+    list_of_labels.setColumnCount(len(label_with_text[0]))
+    list_of_labels.setHorizontalHeaderLabels(['Text', 'Label'])
+    list_of_labels.setRowCount(len(label_with_text))
+    k = 0
+    for row in label_with_text:
+        for i in range(len(row)):
+            list_of_labels.setItem(k, i, QTableWidgetItem(str(row[i])))
+        k += 1
+    list_of_labels.verticalHeader().setVisible(False)
+    cur.execute("SELECT text FROM text_files WHERE file_name = '{}'".format(file_names[0]))
+    text = cur.fetchall()
+    text = text[0][0]
+    text_label.setText(text)
+    return file_names[0]
+
+
+def save_text_label(file_name, text_fragment_input, label_input):
+    cur.execute("INSERT INTO text_files VALUES ('{}','{}','{}','{}')".format(file_name, '', label_input.text(),
+                                                                             text_fragment_input.text()))
+    text_fragment_input.setText("")
+    label_input.setText("")
+    con.commit()
+
+
+def add_text_label():
+    pass
+
+
+def delete_text_label(text_fragment_to_delete):
+    cur.execute("DELETE FROM text_files WHERE text_fragment = '{}'".format(text_fragment_to_delete))
+    con.commit()
+
+
 def fill_files_in_dataset(table_obj, dataset_name):
     cur.execute("SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}'".format(dataset_name))
     file_names = cur.fetchall()
