@@ -445,7 +445,7 @@ QComboBox::drop-down
         </rect>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="team_page"/>
        <widget class="QWidget" name="workspaces_page">
@@ -952,6 +952,111 @@ QPushButton:hover {
            </layout>
           </item>
          </layout>
+        </widget>
+        <widget class="QTabWidget" name="tabWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>69</y>
+           <width>800</width>
+           <height>680</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTabBar::tab { 
+	background-color: rgb(59, 146, 212);
+	color:rgb(243,247,254);
+	border: 0px solid;
+	border-radius: 12px;
+	font: 13pt &quot;Andale Mono&quot;;
+	height: 24px;
+	width: 100px;
+} 
+
+QTabBar::tab:!selected {
+	background-color: rgb(243,247,254);
+	color:rgb(59, 146, 212);
+}
+QTabWidget::tab-bar { 
+	left: 10px; 
+	bottom: 1px;
+	background-color: rgb(243,247,254)
+} 
+QTabWidget{
+	background-color: rgb(243,247,254)
+	border:10px;
+}</string>
+         </property>
+         <property name="tabShape">
+          <enum>QTabWidget::Rounded</enum>
+         </property>
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
+         <widget class="QWidget" name="image_files_tab">
+          <attribute name="title">
+           <string>Image files</string>
+          </attribute>
+          <widget class="QTableWidget" name="image_files_table">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>790</width>
+             <height>650</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(127, 127, 127);
+color: rgb(230, 230, 230);
+font: 17pt &quot;Andale Mono&quot;;
+border-radius: 15px;
+
+</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="text_files_tab">
+          <attribute name="title">
+           <string>Text files</string>
+          </attribute>
+          <widget class="QTableWidget" name="text_files_table">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>790</width>
+             <height>650</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(127, 127, 127);
+color: rgb(230, 230, 230);
+font: 17pt &quot;Andale Mono&quot;;
+border-radius: 15px;
+
+</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
+           <property name="autoScrollMargin">
+            <number>16</number>
+           </property>
+           <property name="showGrid">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </widget>
         </widget>
        </widget>
        <widget class="QWidget" name="projects_page">
