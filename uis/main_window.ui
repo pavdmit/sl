@@ -445,7 +445,7 @@ QComboBox::drop-down
         </rect>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="team_page"/>
        <widget class="QWidget" name="workspaces_page">
@@ -840,8 +840,8 @@ border-radius: 15px;
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>806</width>
-           <height>71</height>
+           <width>874</width>
+           <height>80</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -849,7 +849,7 @@ border-radius: 15px;
            <widget class="QLabel" name="label_13">
             <property name="minimumSize">
              <size>
-              <width>580</width>
+              <width>300</width>
               <height>0</height>
              </size>
             </property>
@@ -868,6 +868,43 @@ color:rgb(43,59,78);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit">
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>20</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	background-color: rgb(59, 146, 212);
+	color:rgb(243,247,254);
+	border: 0px solid;
+	border-radius: 12px;
+	font: 13pt &quot;Andale Mono&quot;;
+}
+
+QPushButton:hover {
+	background-color: rgb(243,247,254);
+	color:rgb(59, 146, 212);
+}</string>
+            </property>
+            <property name="text">
+             <string>Search</string>
             </property>
            </widget>
           </item>
@@ -991,7 +1028,7 @@ QTabWidget{
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="image_files_tab">
           <attribute name="title">

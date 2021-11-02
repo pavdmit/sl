@@ -86,6 +86,14 @@ def delete_text_label(text_fragment_to_delete):
     con.commit()
 
 
+def fill_image_files():
+    pass
+
+
+def fill_text_files():
+    pass
+
+
 def fill_files_in_dataset(table_obj, dataset_name):
     cur.execute("SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}'".format(dataset_name))
     file_names = cur.fetchall()

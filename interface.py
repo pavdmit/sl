@@ -77,6 +77,11 @@ class InviteWindow(QWidget):
         super(InviteWindow, self).__init__()
         path_to_ui = Path(Path.cwd(), 'uis', 'invite_dialog.ui')
         loadUi(path_to_ui, self)
+        # self.invite_btn.clicked.connect(self.close_window)
+        self.invite_btn.setShortcut('Ctrl+Return')
+
+    def close_window(self):
+        self.hide()
 
 
 class EditAccountWindow(QWidget):
