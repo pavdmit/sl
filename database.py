@@ -1,6 +1,14 @@
+import PIL
 from PyQt5.QtWidgets import QTableWidgetItem
 import psycopg2
 from random import randint
+from PIL.ImageQt import ImageQt
+from PIL.Image import Image
+import io
+import base64
+from PyQt5.QtGui import QPixmap
+from pathlib import Path
+from PIL import Image, ImageDraw
 
 con = psycopg2.connect(
     database="dataset_marker",
@@ -47,12 +55,14 @@ def fill_text_label_elements(texts_list, list_of_labels, text_label, dataset_nam
     cur.execute("SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}'".format(dataset_name))
     file_names = cur.fetchall()
     file_names = [file_names[i][0] for i in range(len(file_names))]
+    if len(file_names) == 0:
+        file_names.append("No texts")
     texts_list.clear()
     texts_list.addItems(file_names)
     cur.execute("SELECT text_fragment, label FROM text_files WHERE file_name = '{}'".format(file_names[0]))
     label_with_text = cur.fetchall()
     if len(label_with_text) == 0:
-        file_names.append(("No files", " "))
+        label_with_text.append(("No text", "No label"))
     list_of_labels.setColumnCount(len(label_with_text[0]))
     list_of_labels.setHorizontalHeaderLabels(['Text', 'Label'])
     list_of_labels.setRowCount(len(label_with_text))
@@ -62,10 +72,11 @@ def fill_text_label_elements(texts_list, list_of_labels, text_label, dataset_nam
             list_of_labels.setItem(k, i, QTableWidgetItem(str(row[i])))
         k += 1
     list_of_labels.verticalHeader().setVisible(False)
-    cur.execute("SELECT text FROM text_files WHERE file_name = '{}'".format(file_names[0]))
-    text = cur.fetchall()
-    text = text[0][0]
-    text_label.setText(text)
+    if label_with_text[0] != ("No text", "No label"):
+        cur.execute("SELECT text FROM text_files WHERE file_name = '{}'".format(file_names[0]))
+        text = cur.fetchall()
+        text = text[0][0]
+        text_label.setText(text)
     return file_names[0]
 
 
@@ -140,8 +151,8 @@ def get_team_workflows(current_team):
     return workflow_names
 
 
-def fill_file_params(file_name, x1_input, y1_input, x2_input, y2_input, class_input):
-    cur.execute("SELECT x1, y1, x2, y2, class FROM image_files WHERE file_name = '{}'".format(file_name))
+def fill_image_file_params(file_name, picture, x1_input, y1_input, x2_input, y2_input, class_input):
+    cur.execute("SELECT x1, y1, x2, y2, class, image_represention FROM image_files WHERE file_name = '{}'".format(file_name))
     file_params = cur.fetchall()
     file_params = [file_params[0][i] for i in range(len(file_params[0]))]
     x1_input.setText(str(file_params[0]))
@@ -149,6 +160,17 @@ def fill_file_params(file_name, x1_input, y1_input, x2_input, y2_input, class_in
     x2_input.setText(str(file_params[2]))
     y2_input.setText(str(file_params[3]))
     class_input.setText(str(file_params[4]))
+    image_root = path_to_ui = Path(Path.cwd(), 'data', file_name)
+    image = PIL.Image.open(image_root)
+    draw = ImageDraw.Draw(image)
+    draw.line(
+        xy=(
+            (20, 100),
+            (20, 40)
+        ), fill='red', width=3)
+    q_image = ImageQt(image)
+    pixmap = QPixmap.fromImage(q_image)
+    picture.setPixmap(pixmap)
 
 
 def fill_members(table_obj, team_name):
@@ -170,6 +192,8 @@ def fill_projects(table_obj, workspace_name):
     cur.execute("SELECT dataset_name, task_type, description FROM datasets WHERE dataset_name in (select "
                 "dataset_name from dataset_to_workspace where workspace_name = '{}')".format(workspace_name))
     datasets = cur.fetchall()
+    if len(datasets) == 0:
+        datasets.append(('No datasets', ' ', ' '))
     table_obj.setColumnCount(len(datasets[0]))
     table_obj.setHorizontalHeaderLabels(['Dataset name', 'Task type', 'Description'])
     table_obj.setRowCount(len(datasets))
@@ -179,22 +203,3 @@ def fill_projects(table_obj, workspace_name):
             table_obj.setItem(k, i, QTableWidgetItem(str(row[i])))
         k += 1
     table_obj.verticalHeader().setVisible(False)
-
-
-'''def fill_table(table_obj, table_name):
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    form = session.query(globals()[table_name])
-    attributes_names = []
-    for name in globals()[table_name].__dict__.keys():
-        if name[0] != '_':
-            attributes_names.append(name)
-    table_obj.setColumnCount(len(attributes_names))
-    table_obj.setHorizontalHeaderLabels(attributes_names)
-    table_obj.setRowCount(form.count())
-    k = 0
-    for row in form:
-        for i in range(len(attributes_names)):
-            table_obj.setItem(k, i, QTableWidgetItem(str(getattr(row, attributes_names[i]))))
-        k += 1
-    table_obj.resizeColumnsToContents()'''

@@ -2,7 +2,6 @@ import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow
 from PyQt5.uic import loadUi
-from PyQt5.QtGui import QPixmap
 from database import *
 from functools import partial
 from pathlib import Path
@@ -50,8 +49,8 @@ class ImagesLabelWindow(QWidget):
         fill_files_in_dataset(self.list_of_files, dataset_name)
         self.list_of_files.setColumnWidth(0, 240)
         self.list_of_files.selectionModel().selectionChanged.connect(
-            lambda: fill_file_params(self.list_of_files.currentItem().text(), self.x1_input, self.y1_input,
-                                     self.x2_input, self.y2_input, self.class_input))
+            lambda: fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
+                                           self.y1_input, self.x2_input, self.y2_input, self.class_input))
 
 
 class TextLabelWindow(QWidget):
@@ -68,8 +67,9 @@ class TextLabelWindow(QWidget):
         self.list_of_labels.setColumnWidth(0, 170)
         self.list_of_labels.setColumnWidth(1, 100)
         self.delete_btn.clicked.connect(lambda: delete_text_label(self.list_of_labels.currentItem().text()))
-        self.delete_btn.clicked.connect(lambda: fill_text_label_elements(self.texts_list, self.list_of_labels, self.text,
-                                                                         dataset_name))
+        self.delete_btn.clicked.connect(
+            lambda: fill_text_label_elements(self.texts_list, self.list_of_labels, self.text,
+                                             dataset_name))
 
 
 class InviteWindow(QWidget):
@@ -126,7 +126,7 @@ class PlainWidget:
         self.button.setText(workflow_name)
         self.button.setObjectName("button")
         self.button.clicked.connect(lambda: stackedWidget.setCurrentWidget(projects_page))
-        self.button.clicked.connect(is_clicked)
+        self.button.clicked.connect(lambda: Account.is_clicked(workflow_name=workflow_name))
         self.background_frame = QtWidgets.QFrame(self.plain_widget)
         self.background_frame.setGeometry(QtCore.QRect(0, 60, 230, 100))
         self.background_frame.setStyleSheet("background-color: rgb(255, 255, 255);\n"
@@ -135,10 +135,6 @@ class PlainWidget:
         self.background_frame.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.background_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.background_frame.setObjectName("background_frame")
-
-
-def is_clicked():
-    print("Clicked")
 
 
 class Account(QMainWindow):
@@ -185,6 +181,7 @@ class Account(QMainWindow):
         self.projects_btn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.projects_page))
         self.tasks_btn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.tasks_page))
         self.signout_btn1.clicked.connect(self.sign_out)
+        self.signout_btn1.setShortcut("Ctrl+X")
         self.signout_btn2.clicked.connect(self.sign_out)
         self.signout_btn3.clicked.connect(self.sign_out)
         self.signout_btn4.clicked.connect(self.sign_out)
@@ -244,6 +241,10 @@ class Account(QMainWindow):
         fill_members(self.members_table, self.team_name)
         fill_projects(self.datasets_table, self.workspace_name)
         self.fill_workspaces()
+
+    @staticmethod
+    def is_clicked(workflow_name):
+        print("Clicked: ", workflow_name)
 
     @staticmethod
     def sign_out():
