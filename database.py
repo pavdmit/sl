@@ -97,10 +97,26 @@ def delete_text_label(text_fragment_to_delete):
     con.commit()
 
 
-def fill_image_files(table_obj, workspace_name):
-    cur.execute("SELECT file_name, class, image_width, image_height FROM image_files WHERE file_name IN (SELECT "
-                "file_name FROM dataset_to_file WHERE dataset_name in (SELECT dataset_name FROM dataset_to_workspace "
-                "WHERE workspace_name = '{}'))".format(workspace_name))
+def fill_image_files(table_obj, workspace_name, query=None):
+    if query is not None:
+        split_query = query.split()
+        if len(split_query) != 4:
+            for i in range(4-len(split_query)):
+                split_query.append(" ")
+        if split_query[2] == ' ':
+            split_query[2] = '0'
+        if split_query[3] == ' ':
+            split_query[3] = '0'
+        cur.execute("SELECT file_name, class, image_width, image_height FROM image_files "
+                    "WHERE file_name LIKE '%{}%' OR class LIKE '%{}%' OR image_width = {} OR image_height = {} "
+                    "AND file_name IN (SELECT file_name FROM dataset_to_file WHERE dataset_name in "
+                    "(SELECT dataset_name FROM dataset_to_workspace WHERE workspace_name = '{}'))".format(split_query[0], split_query[1],
+                                                                                                          split_query[2], split_query[3],
+                                                                                                          workspace_name))
+    else:
+        cur.execute("SELECT file_name, class, image_width, image_height FROM image_files WHERE file_name IN (SELECT "
+                    "file_name FROM dataset_to_file WHERE dataset_name in (SELECT dataset_name FROM "
+                    "dataset_to_workspace WHERE workspace_name = '{}'))".format(workspace_name))
     image_data = cur.fetchall()
     if len(image_data) == 0:
         image_data.append(("No files", "", "", ""))
@@ -115,10 +131,21 @@ def fill_image_files(table_obj, workspace_name):
     table_obj.verticalHeader().setVisible(False)
 
 
-def fill_text_files(table_obj, workspace_name):
-    cur.execute("SELECT file_name, label, text_fragment FROM text_files WHERE file_name IN (SELECT "
-                "file_name FROM dataset_to_file WHERE dataset_name in (SELECT dataset_name FROM dataset_to_workspace "
-                "WHERE workspace_name = '{}'))".format(workspace_name))
+def fill_text_files(table_obj, workspace_name, query=None):
+    if query is not None:
+        split_query = query.split()
+        if len(split_query) != 3:
+            for i in range(3 - len(split_query)):
+                split_query.append(" ")
+        cur.execute("SELECT file_name, label, text_fragment FROM text_files WHERE file_name LIKE '%{}%' OR "
+                    "label LIKE '%{}%' OR text_fragment LIKE '%{}%' AND file_name IN (SELECT file_name FROM "
+                    "dataset_to_file WHERE dataset_name in (SELECT dataset_name FROM dataset_to_workspace "
+                    "WHERE workspace_name = '{}'))".format(split_query[0], split_query[1], split_query[2],
+                                                           workspace_name))
+    else:
+        cur.execute("SELECT file_name, label, text_fragment FROM text_files WHERE file_name IN (SELECT "
+                    "file_name FROM dataset_to_file WHERE dataset_name in "
+                    "(SELECT dataset_name FROM dataset_to_workspace WHERE workspace_name = '{}'))".format(workspace_name))
     text_data = cur.fetchall()
     if len(text_data) == 0:
         text_data.append(("No files", "", ""))

@@ -872,7 +872,7 @@ color:rgb(43,59,78);</string>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="search_line">
             <property name="maximumSize">
              <size>
               <width>100</width>
@@ -882,7 +882,7 @@ color:rgb(43,59,78);</string>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="search_btn">
             <property name="maximumSize">
              <size>
               <width>60</width>
@@ -1028,7 +1028,7 @@ QTabWidget{
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="image_files_tab">
           <attribute name="title">

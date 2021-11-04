@@ -51,7 +51,7 @@ class ImagesLabelWindow(QWidget):
         self.list_of_files.selectionModel().selectionChanged.connect(
             lambda: fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
                                            self.y1_input, self.x2_input, self.y2_input, self.class_input))
-        self.save_btn.clicked.connect(lambda: save_image_changes(self.list_of_files.currentItem().text(),self.x1_input,
+        self.save_btn.clicked.connect(lambda: save_image_changes(self.list_of_files.currentItem().text(), self.x1_input,
                                                                  self.y1_input, self.x2_input, self.y2_input, self.class_input))
         self.save_btn.clicked.connect(
             lambda: fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
@@ -199,6 +199,10 @@ class Account(QMainWindow):
         self.edit_btn4.clicked.connect(self.edit_account)
         self.edit_btn5.clicked.connect(self.edit_account)
         self.invite_btn.clicked.connect(self.invite_user)
+        self.search_btn.clicked.connect(lambda: fill_image_files(self.image_files_table, self.workspace_name,
+                                                                 self.search_line.text()))
+        self.search_btn.clicked.connect(lambda: fill_text_files(self.text_files_table, self.workspace_name,
+                                                                self.search_line.text()))
 
     def fill_workspaces(self):
         bottom_margin = 100
