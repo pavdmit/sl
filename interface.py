@@ -51,6 +51,11 @@ class ImagesLabelWindow(QWidget):
         self.list_of_files.selectionModel().selectionChanged.connect(
             lambda: fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
                                            self.y1_input, self.x2_input, self.y2_input, self.class_input))
+        self.save_btn.clicked.connect(lambda: save_image_changes(self.list_of_files.currentItem().text(),self.x1_input,
+                                                                 self.y1_input, self.x2_input, self.y2_input, self.class_input))
+        self.save_btn.clicked.connect(
+            lambda: fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
+                                           self.y1_input, self.x2_input, self.y2_input, self.class_input))
 
 
 class TextLabelWindow(QWidget):
@@ -159,6 +164,8 @@ class Account(QMainWindow):
         self.workspace_picture.setText(self.workspace_name[0])
         fill_members(self.members_table, self.team_name)
         fill_projects(self.datasets_table, self.workspace_name)
+        fill_image_files(self.image_files_table, self.workspace_name)
+        fill_text_files(self.text_files_table, self.workspace_name)
         self.datasets_table.setColumnWidth(0, 250)
         self.datasets_table.setColumnWidth(1, 250)
         self.datasets_table.setColumnWidth(2, 259)

@@ -11,9 +11,9 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 con = psycopg2.connect(
-    database="dataset_marker",
+    database="sl",
     user="postgres",
-    password="",
+    password="postgres",
     host="localhost",
     port="5432"
 )
@@ -97,12 +97,40 @@ def delete_text_label(text_fragment_to_delete):
     con.commit()
 
 
-def fill_image_files():
-    pass
+def fill_image_files(table_obj, workspace_name):
+    cur.execute("SELECT file_name, class, image_width, image_height FROM image_files WHERE file_name IN (SELECT "
+                "file_name FROM dataset_to_file WHERE dataset_name in (SELECT dataset_name FROM dataset_to_workspace "
+                "WHERE workspace_name = '{}'))".format(workspace_name))
+    image_data = cur.fetchall()
+    if len(image_data) == 0:
+        image_data.append(("No files", "", "", ""))
+    table_obj.setColumnCount(len(image_data[0]))
+    table_obj.setHorizontalHeaderLabels(['File names', 'Class', 'Width', 'Height'])
+    table_obj.setRowCount(len(image_data))
+    k = 0
+    for row in image_data:
+        for i in range(len(row)):
+            table_obj.setItem(k, i, QTableWidgetItem(str(row[i])))
+        k += 1
+    table_obj.verticalHeader().setVisible(False)
 
 
-def fill_text_files():
-    pass
+def fill_text_files(table_obj, workspace_name):
+    cur.execute("SELECT file_name, label, text_fragment FROM text_files WHERE file_name IN (SELECT "
+                "file_name FROM dataset_to_file WHERE dataset_name in (SELECT dataset_name FROM dataset_to_workspace "
+                "WHERE workspace_name = '{}'))".format(workspace_name))
+    text_data = cur.fetchall()
+    if len(text_data) == 0:
+        text_data.append(("No files", "", ""))
+    table_obj.setColumnCount(len(text_data[0]))
+    table_obj.setHorizontalHeaderLabels(['File names', 'Label', 'Text fragment'])
+    table_obj.setRowCount(len(text_data))
+    k = 0
+    for row in text_data:
+        for i in range(len(row)):
+            table_obj.setItem(k, i, QTableWidgetItem(str(row[i])))
+        k += 1
+    table_obj.verticalHeader().setVisible(False)
 
 
 def fill_files_in_dataset(table_obj, dataset_name):
@@ -152,25 +180,45 @@ def get_team_workflows(current_team):
 
 
 def fill_image_file_params(file_name, picture, x1_input, y1_input, x2_input, y2_input, class_input):
-    cur.execute("SELECT x1, y1, x2, y2, class, image_represention FROM image_files WHERE file_name = '{}'".format(file_name))
+    cur.execute(
+        "SELECT x1, y1, x2, y2, class, image_represention FROM image_files WHERE file_name = '{}'".format(file_name))
     file_params = cur.fetchall()
     file_params = [file_params[0][i] for i in range(len(file_params[0]))]
-    x1_input.setText(str(file_params[0]))
-    y1_input.setText(str(file_params[1]))
-    x2_input.setText(str(file_params[2]))
-    y2_input.setText(str(file_params[3]))
+    x1 = int(file_params[0])
+    y1 = int(file_params[1])
+    x2 = int(file_params[2])
+    y2 = int(file_params[3])
+    x1_input.setText(str(x1))
+    y1_input.setText(str(y1))
+    x2_input.setText(str(x2))
+    y2_input.setText(str(y2))
     class_input.setText(str(file_params[4]))
     image_root = path_to_ui = Path(Path.cwd(), 'data', file_name)
     image = PIL.Image.open(image_root)
     draw = ImageDraw.Draw(image)
     draw.line(
         xy=(
-            (20, 100),
-            (20, 40)
+            (x1, y1),
+            (x1, y2),
+            (x2, y2),
+            (x2, y1),
+            (x1, y1)
         ), fill='red', width=3)
     q_image = ImageQt(image)
     pixmap = QPixmap.fromImage(q_image)
     picture.setPixmap(pixmap)
+
+
+def save_image_changes(file_name, x1_input, y1_input, x2_input, y2_input, class_input):
+    x1 = x1_input.text()
+    y1 = y1_input.text()
+    x2 = x2_input.text()
+    y2 = y2_input.text()
+    class_text = class_input.text()
+    cur.execute(
+        "UPDATE image_files SET x1='{}', y1='{}', x2='{}', y2='{}', class='{}' WHERE file_name='{}'".format(x1, y1, x2,
+                                                                                                            y2, class_text, file_name))
+    con.commit()
 
 
 def fill_members(table_obj, team_name):
