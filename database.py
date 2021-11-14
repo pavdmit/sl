@@ -176,6 +176,19 @@ def fill_files_in_dataset(table_obj, dataset_name):
     table_obj.verticalHeader().setVisible(False)
 
 
+def save_image_to_dataset(file_name, dataset_name):
+    image_class = "Unknown"
+    path_to_file = Path(Path.cwd(), 'data', file_name)
+    with Image.open(path_to_file) as image:
+        width, height = image.size
+    cur.execute(
+        "INSERT INTO image_files VALUES ( '{}', '{}', '{}','{}','{}','{}','{}','{}')".format(
+            file_name, 0, 0, 0, 0, image_class, width, height))
+    cur.execute(
+        "INSERT INTO dataset_to_file VALUES ( '{}', '{}')".format(file_name, dataset_name))
+    con.commit()
+
+
 def which_task_type(dataset_name):
     cur.execute("SELECT task_type FROM datasets WHERE dataset_name = '{}'".format(dataset_name))
     task_type = cur.fetchall()
@@ -208,7 +221,7 @@ def get_team_workflows(current_team):
 
 def fill_image_file_params(file_name, picture, x1_input, y1_input, x2_input, y2_input, class_input):
     cur.execute(
-        "SELECT x1, y1, x2, y2, class, image_represention FROM image_files WHERE file_name = '{}'".format(file_name))
+        "SELECT x1, y1, x2, y2, class, image_width, image_height FROM image_files WHERE file_name = '{}'".format(file_name))
     file_params = cur.fetchall()
     file_params = [file_params[0][i] for i in range(len(file_params[0]))]
     x1 = int(file_params[0])
@@ -220,7 +233,11 @@ def fill_image_file_params(file_name, picture, x1_input, y1_input, x2_input, y2_
     x2_input.setText(str(x2))
     y2_input.setText(str(y2))
     class_input.setText(str(file_params[4]))
+    width = file_params[5]
+    height = file_params[6]
+    picture.resize(width, height)
     image_root = path_to_ui = Path(Path.cwd(), 'data', file_name)
+
     image = PIL.Image.open(image_root)
     draw = ImageDraw.Draw(image)
     draw.line(

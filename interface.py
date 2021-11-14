@@ -5,6 +5,16 @@ from PyQt5.uic import loadUi
 from database import *
 from functools import partial
 from pathlib import Path
+import os
+
+from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtGui import QPixmap, QPainter, QPen
+from PyQt5.QtGui import QBrush, QImage, QPainter, QPen
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
+from PyQt5.QtGui import QIcon
 
 
 class Login(QDialog):
@@ -47,15 +57,44 @@ class ImagesLabelWindow(QWidget):
         path_to_ui = Path(Path.cwd(), 'uis', 'images_label_window.ui')
         loadUi(path_to_ui, self)
         fill_files_in_dataset(self.list_of_files, dataset_name)
+        self.dataset_name = dataset_name
         self.list_of_files.setColumnWidth(0, 240)
+        self.drawing = False
         self.list_of_files.selectionModel().selectionChanged.connect(
             lambda: fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
                                            self.y1_input, self.x2_input, self.y2_input, self.class_input))
         self.save_btn.clicked.connect(lambda: save_image_changes(self.list_of_files.currentItem().text(), self.x1_input,
-                                                                 self.y1_input, self.x2_input, self.y2_input, self.class_input))
+                                                                 self.y1_input, self.x2_input, self.y2_input,
+                                                                 self.class_input))
         self.save_btn.clicked.connect(
             lambda: fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
                                            self.y1_input, self.x2_input, self.y2_input, self.class_input))
+        self.addnew_btn.clicked.connect(self.open_file)
+
+    def open_file(self):
+        try:
+            file_name = QFileDialog.getOpenFileName()
+            path = file_name[0]
+            file_name = os.path.basename(path)
+            save_image_to_dataset(file_name, self.dataset_name)
+            fill_files_in_dataset(self.list_of_files, self.dataset_name)
+        except:
+            pass
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.x1_input.setText(str(event.pos().x() - 35))
+            self.y1_input.setText(str(event.pos().y() - 35))
+
+    def mouseMoveEvent(self, event):
+        if event.button() == Qt.NoButton:
+            self.x2_input.setText(str(event.pos().x() - 35))
+            self.y2_input.setText(str(event.pos().y() - 35))
+            save_image_changes(self.list_of_files.currentItem().text(), self.x1_input,
+                               self.y1_input, self.x2_input, self.y2_input,
+                               self.class_input)
+            fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
+                                   self.y1_input, self.x2_input, self.y2_input, self.class_input)
 
 
 class TextLabelWindow(QWidget):
@@ -152,6 +191,12 @@ class Account(QMainWindow):
         self.window_widget = None
         self.edit_window = None
         self.invite_window = None
+        user_data = load_user_account(user_id)
+        self.user_photo1.setText(str(user_data[1][0]+user_data[3][0]))
+        self.user_photo2.setText(str(user_data[1][0]+user_data[3][0]))
+        self.user_photo3.setText(str(user_data[1][0]+user_data[3][0]))
+        self.user_photo4.setText(str(user_data[1][0]+user_data[3][0]))
+        self.user_photo5.setText(str(user_data[1][0]+user_data[3][0]))
 
         # Initial window settings
         team_names = get_team_names(user_id)

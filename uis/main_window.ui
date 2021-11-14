@@ -445,7 +445,7 @@ QComboBox::drop-down
         </rect>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="team_page"/>
        <widget class="QWidget" name="workspaces_page">
@@ -463,13 +463,13 @@ QComboBox::drop-down
            <widget class="QLabel" name="label_15">
             <property name="minimumSize">
              <size>
-              <width>280</width>
+              <width>190</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>280</width>
+              <width>190</width>
               <height>16777215</height>
              </size>
             </property>
@@ -541,18 +541,63 @@ QPushButton:hover {
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_16">
+           <widget class="QPushButton" name="search_btn1">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>24</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>60</width>
-              <height>16777215</height>
+              <width>90</width>
+              <height>24</height>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 8pt &quot;Andale Mono&quot;;</string>
+             <string notr="true">QPushButton {
+	background-color: rgb(59, 146, 212);
+	color:rgb(243,247,254);
+	border: 0px solid;
+	border-radius: 12px;
+	font: 13pt &quot;Andale Mono&quot;;
+}
+
+QPushButton:hover {
+	background-color: rgb(243,247,254);
+	color:rgb(59, 146, 212);
+}</string>
             </property>
             <property name="text">
-             <string>Userphoto</string>
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="user_photo1">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>59</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>59</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(64, 128, 2);
+border-radius:10px;
+font: 22pt &quot;Andale Mono&quot;;
+color:rgb(255,255,255);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -629,7 +674,7 @@ QPushButton:hover {
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>802</width>
+           <width>803</width>
            <height>71</height>
           </rect>
          </property>
@@ -638,13 +683,13 @@ QPushButton:hover {
            <widget class="QLabel" name="label_11">
             <property name="minimumSize">
              <size>
-              <width>280</width>
+              <width>180</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>280</width>
+              <width>180</width>
               <height>16777215</height>
              </size>
             </property>
@@ -664,7 +709,7 @@ color:rgb(43,59,78);</string>
            <widget class="QPushButton" name="invite_btn">
             <property name="minimumSize">
              <size>
-              <width>40</width>
+              <width>65</width>
               <height>24</height>
              </size>
             </property>
@@ -716,18 +761,63 @@ QPushButton:hover {
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_12">
+           <widget class="QPushButton" name="search_btn2">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>24</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>60</width>
-              <height>16777215</height>
+              <width>90</width>
+              <height>24</height>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 8pt &quot;Andale Mono&quot;;</string>
+             <string notr="true">QPushButton {
+	background-color: rgb(59, 146, 212);
+	color:rgb(243,247,254);
+	border: 0px solid;
+	border-radius: 12px;
+	font: 13pt &quot;Andale Mono&quot;;
+}
+
+QPushButton:hover {
+	background-color: rgb(243,247,254);
+	color:rgb(59, 146, 212);
+}</string>
             </property>
             <property name="text">
-             <string>Userphoto</string>
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="user_photo2">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>59</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>59</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(64, 128, 2);
+border-radius:10px;
+font: 22pt &quot;Andale Mono&quot;;
+color:rgb(255,255,255);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -849,7 +939,7 @@ border-radius: 15px;
            <widget class="QLabel" name="label_13">
             <property name="minimumSize">
              <size>
-              <width>300</width>
+              <width>280</width>
               <height>0</height>
              </size>
             </property>
@@ -875,9 +965,15 @@ color:rgb(43,59,78);</string>
            <widget class="QLineEdit" name="search_line">
             <property name="maximumSize">
              <size>
-              <width>100</width>
+              <width>200</width>
               <height>20</height>
              </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLineEdit {
+	border: 1px solid rgb(179, 179, 179);
+	border-radius:10px
+}</string>
             </property>
            </widget>
           </item>
@@ -885,7 +981,7 @@ color:rgb(43,59,78);</string>
            <widget class="QPushButton" name="search_btn">
             <property name="maximumSize">
              <size>
-              <width>60</width>
+              <width>90</width>
               <height>24</height>
              </size>
             </property>
@@ -909,18 +1005,24 @@ QPushButton:hover {
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_14">
+           <widget class="QLabel" name="user_photo3">
             <property name="maximumSize">
              <size>
               <width>60</width>
-              <height>16777215</height>
+              <height>59</height>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 8pt &quot;Andale Mono&quot;;</string>
+             <string notr="true">background-color: rgb(64, 128, 2);
+border-radius:10px;
+font: 22pt &quot;Andale Mono&quot;;
+color:rgb(255,255,255);</string>
             </property>
             <property name="text">
-             <string>Userphoto</string>
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -938,6 +1040,12 @@ QPushButton:hover {
                <size>
                 <width>130</width>
                 <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>130</width>
+                <height>16777215</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -963,8 +1071,14 @@ QPushButton:hover {
              <widget class="QPushButton" name="edit_btn3">
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>130</width>
                 <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>130</width>
+                <height>16777215</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -1102,7 +1216,7 @@ border-radius: 15px;
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>802</width>
+           <width>812</width>
            <height>71</height>
           </rect>
          </property>
@@ -1111,13 +1225,13 @@ border-radius: 15px;
            <widget class="QLabel" name="label_17">
             <property name="minimumSize">
              <size>
-              <width>350</width>
+              <width>220</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>280</width>
+              <width>190</width>
               <height>16777215</height>
              </size>
             </property>
@@ -1130,6 +1244,39 @@ color:rgb(43,59,78);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	background-color: rgb(59, 146, 212);
+	color:rgb(243,247,254);
+	border: 0px solid;
+	border-radius: 12px;
+	font: 13pt &quot;Andale Mono&quot;;
+}
+
+QPushButton:hover {
+	background-color: rgb(243,247,254);
+	color:rgb(59, 146, 212);
+}</string>
+            </property>
+            <property name="text">
+             <string>Add</string>
             </property>
            </widget>
           </item>
@@ -1156,18 +1303,63 @@ color:rgb(43,59,78);</string>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_18">
+           <widget class="QPushButton" name="search_btn3">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>24</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>60</width>
-              <height>16777215</height>
+              <width>90</width>
+              <height>24</height>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 8pt &quot;Andale Mono&quot;;</string>
+             <string notr="true">QPushButton {
+	background-color: rgb(59, 146, 212);
+	color:rgb(243,247,254);
+	border: 0px solid;
+	border-radius: 12px;
+	font: 13pt &quot;Andale Mono&quot;;
+}
+
+QPushButton:hover {
+	background-color: rgb(243,247,254);
+	color:rgb(59, 146, 212);
+}</string>
             </property>
             <property name="text">
-             <string>Userphoto</string>
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="user_photo4">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>59</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>59</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(64, 128, 2);
+border-radius:10px;
+font: 22pt &quot;Andale Mono&quot;;
+color:rgb(255,255,255);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -1281,13 +1473,13 @@ border-radius: 15px;
            <widget class="QLabel" name="label_19">
             <property name="minimumSize">
              <size>
-              <width>280</width>
+              <width>190</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>280</width>
+              <width>190</width>
               <height>16777215</height>
              </size>
             </property>
@@ -1359,18 +1551,64 @@ QPushButton:hover {
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_20">
+           <widget class="QPushButton" name="search_btn4">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>24</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>60</width>
-              <height>16777215</height>
+              <width>90</width>
+              <height>24</height>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 8pt &quot;Andale Mono&quot;;</string>
+             <string notr="true">QPushButton {
+	background-color: rgb(59, 146, 212);
+	color:rgb(243,247,254);
+	border: 0px solid;
+	border-radius: 12px;
+	font: 13pt &quot;Andale Mono&quot;;
+}
+
+QPushButton:hover {
+	background-color: rgb(243,247,254);
+	color:rgb(59, 146, 212);
+}
+</string>
             </property>
             <property name="text">
-             <string>Userphoto</string>
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="user_photo5">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>59</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>59</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(64, 128, 2);
+border-radius:10px;
+font: 22pt &quot;Andale Mono&quot;;
+color:rgb(255,255,255);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
