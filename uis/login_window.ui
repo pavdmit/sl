@@ -91,6 +91,12 @@ border-radius:20px
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QLineEdit" name="email_input">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -99,12 +105,18 @@ border-radius:20px
 }</string>
         </property>
         <property name="text">
-         <string>admin</string>
+         <string/>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLineEdit" name="password_input">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -114,7 +126,7 @@ border-radius:20px
 </string>
         </property>
         <property name="text">
-         <string>admin</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -125,7 +137,7 @@ border-radius:20px
       <rect>
        <x>20</x>
        <y>150</y>
-       <width>71</width>
+       <width>73</width>
        <height>80</height>
       </rect>
      </property>
@@ -169,7 +181,7 @@ color:rgb(43,59,78);</string>
 	color:rgb(243,247,254);
 	border: 0px solid;
 	border-radius: 10px;
-	font: 10pt &quot;Andale Mono&quot;;
+	font: 11pt &quot;Andale Mono&quot;;
 }
 
 QPushButton:hover {
@@ -184,14 +196,14 @@ QPushButton:hover {
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>107</x>
-       <y>236</y>
-       <width>131</width>
-       <height>16</height>
+       <x>80</x>
+       <y>235</y>
+       <width>161</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 10pt &quot;Andale Mono&quot;;
+      <string notr="true">font: 11pt &quot;Andale Mono&quot;;
 color:rgb(43,59,78);</string>
      </property>
      <property name="text">
@@ -212,7 +224,7 @@ color:rgb(43,59,78);</string>
 	color:rgb(59, 146, 212);;
 	border: 0px solid;
 	border-radius: 10px;
-	font: 10pt &quot;Andale Mono&quot;;
+	font: 11pt &quot;Andale Mono&quot;;
 }
 
 </string>
@@ -229,6 +241,15 @@ color:rgb(43,59,78);</string>
        <width>161</width>
        <height>61</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Andale Mono</family>
+       <pointsize>25</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
      </property>
      <property name="styleSheet">
       <string notr="true">font: 25pt &quot;Andale Mono&quot;;

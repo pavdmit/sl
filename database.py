@@ -51,7 +51,7 @@ def save_account_changes(user_id, email_edit_line, password_edit_line, fname_edi
     con.commit()
 
 
-def fill_text_label_elements(texts_list, list_of_labels, text_label, dataset_name):
+def fill_text_label_elements(texts_list, list_of_labels, text_label, dataset_name, current_file_name=None):
     cur.execute("SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}'".format(dataset_name))
     file_names = cur.fetchall()
     file_names = [file_names[i][0] for i in range(len(file_names))]
@@ -59,7 +59,9 @@ def fill_text_label_elements(texts_list, list_of_labels, text_label, dataset_nam
         file_names.append("No texts")
     texts_list.clear()
     texts_list.addItems(file_names)
-    cur.execute("SELECT text_fragment, label FROM text_files WHERE file_name = '{}'".format(file_names[0]))
+    if current_file_name is None:
+        current_file_name = file_names[0]
+    cur.execute("SELECT text_fragment, label FROM text_files_labels WHERE file_name = '{}'".format(current_file_name))
     label_with_text = cur.fetchall()
     if len(label_with_text) == 0:
         label_with_text.append(("No text", "No label"))
@@ -67,29 +69,34 @@ def fill_text_label_elements(texts_list, list_of_labels, text_label, dataset_nam
     list_of_labels.setHorizontalHeaderLabels(['Text', 'Label'])
     list_of_labels.setRowCount(len(label_with_text))
     k = 0
+    print(current_file_name)
     for row in label_with_text:
         for i in range(len(row)):
             list_of_labels.setItem(k, i, QTableWidgetItem(str(row[i])))
         k += 1
     list_of_labels.verticalHeader().setVisible(False)
     if label_with_text[0] != ("No text", "No label"):
-        cur.execute("SELECT text FROM text_files WHERE file_name = '{}'".format(file_names[0]))
+        cur.execute("SELECT text FROM text_files WHERE file_name = '{}'".format(current_file_name))
         text = cur.fetchall()
+        print(text)
         text = text[0][0]
         text_label.setText(text)
-    return file_names[0]
+    return current_file_name
 
 
 def save_text_label(file_name, text_fragment_input, label_input):
-    cur.execute("INSERT INTO text_files VALUES ('{}','{}','{}','{}')".format(file_name, '', label_input.text(),
-                                                                             text_fragment_input.text()))
+    cur.execute("INSERT INTO text_files_labels VALUES ('{}','{}','{}')".format(file_name, text_fragment_input.text(),
+                                                                               label_input.text()))
     text_fragment_input.setText("")
     label_input.setText("")
     con.commit()
 
 
-def add_text_label():
-    pass
+def add_text_file(file_name, file, dataset_name):
+    cur.execute("INSERT INTO text_files VALUES ('{}','{}','{}','{}')".format(file_name, file, '', ''))
+    cur.execute(
+        "INSERT INTO dataset_to_file VALUES ( '{}', '{}')".format(file_name, dataset_name))
+    con.commit()
 
 
 def delete_text_label(text_fragment_to_delete):
@@ -97,11 +104,15 @@ def delete_text_label(text_fragment_to_delete):
     con.commit()
 
 
+def add_dataset(dataset_name_input, task_type_input, description_input):  # TODO
+    pass
+
+
 def fill_image_files(table_obj, workspace_name, query=None):
     if query is not None:
         split_query = query.split()
         if len(split_query) != 4:
-            for i in range(4-len(split_query)):
+            for i in range(4 - len(split_query)):
                 split_query.append(" ")
         if split_query[2] == ' ':
             split_query[2] = '0'
@@ -110,9 +121,10 @@ def fill_image_files(table_obj, workspace_name, query=None):
         cur.execute("SELECT file_name, class, image_width, image_height FROM image_files "
                     "WHERE file_name LIKE '%{}%' OR class LIKE '%{}%' OR image_width = {} OR image_height = {} "
                     "AND file_name IN (SELECT file_name FROM dataset_to_file WHERE dataset_name in "
-                    "(SELECT dataset_name FROM dataset_to_workspace WHERE workspace_name = '{}'))".format(split_query[0], split_query[1],
-                                                                                                          split_query[2], split_query[3],
-                                                                                                          workspace_name))
+                    "(SELECT dataset_name FROM dataset_to_workspace WHERE workspace_name = '{}'))".format(
+            split_query[0], split_query[1],
+            split_query[2], split_query[3],
+            workspace_name))
     else:
         cur.execute("SELECT file_name, class, image_width, image_height FROM image_files WHERE file_name IN (SELECT "
                     "file_name FROM dataset_to_file WHERE dataset_name in (SELECT dataset_name FROM "
@@ -145,7 +157,8 @@ def fill_text_files(table_obj, workspace_name, query=None):
     else:
         cur.execute("SELECT file_name, label, text_fragment FROM text_files WHERE file_name IN (SELECT "
                     "file_name FROM dataset_to_file WHERE dataset_name in "
-                    "(SELECT dataset_name FROM dataset_to_workspace WHERE workspace_name = '{}'))".format(workspace_name))
+                    "(SELECT dataset_name FROM dataset_to_workspace WHERE workspace_name = '{}'))".format(
+            workspace_name))
     text_data = cur.fetchall()
     if len(text_data) == 0:
         text_data.append(("No files", "", ""))
@@ -209,6 +222,8 @@ def get_team_names(user_id):
     cur.execute("SELECT team_name FROM team_to_user WHERE user_id = '{}'".format(user_id))
     team_names = cur.fetchall()
     team_names = [team_names[i][0] for i in range(len(team_names))]
+    if len(team_names) == 0:
+        team_names.append("No team")
     return team_names
 
 
@@ -216,12 +231,15 @@ def get_team_workflows(current_team):
     cur.execute("SELECT workspace_name FROM workspace_to_team WHERE team_name = '{}'".format(current_team))
     workflow_names = cur.fetchall()
     workflow_names = [workflow_names[i][0] for i in range(len(workflow_names))]
+    if len(workflow_names) == 0:
+        workflow_names.append("No workspaces")
     return workflow_names
 
 
 def fill_image_file_params(file_name, picture, x1_input, y1_input, x2_input, y2_input, class_input):
     cur.execute(
-        "SELECT x1, y1, x2, y2, class, image_width, image_height FROM image_files WHERE file_name = '{}'".format(file_name))
+        "SELECT x1, y1, x2, y2, class, image_width, image_height FROM image_files WHERE file_name = '{}'".format(
+            file_name))
     file_params = cur.fetchall()
     file_params = [file_params[0][i] for i in range(len(file_params[0]))]
     x1 = int(file_params[0])
@@ -248,9 +266,11 @@ def fill_image_file_params(file_name, picture, x1_input, y1_input, x2_input, y2_
             (x2, y1),
             (x1, y1)
         ), fill='red', width=3)
-    q_image = ImageQt(image)
+    q_image = ImageQt(image).copy()
     pixmap = QPixmap.fromImage(q_image)
-    picture.setPixmap(pixmap)
+    picture.clear()
+    picture.setPixmap(QPixmap.fromImage(q_image))
+    picture.adjustSize()
 
 
 def save_image_changes(file_name, x1_input, y1_input, x2_input, y2_input, class_input):
@@ -261,7 +281,9 @@ def save_image_changes(file_name, x1_input, y1_input, x2_input, y2_input, class_
     class_text = class_input.text()
     cur.execute(
         "UPDATE image_files SET x1='{}', y1='{}', x2='{}', y2='{}', class='{}' WHERE file_name='{}'".format(x1, y1, x2,
-                                                                                                            y2, class_text, file_name))
+                                                                                                            y2,
+                                                                                                            class_text,
+                                                                                                            file_name))
     con.commit()
 
 
@@ -269,6 +291,8 @@ def fill_members(table_obj, team_name):
     cur.execute("SELECT first_name, last_name,email FROM users WHERE id in (select user_id from team_to_user  where "
                 "team_name = '{}');".format(team_name))
     members = cur.fetchall()
+    if len(members) == 0:
+        members.append(['No members', '', ''])
     table_obj.setColumnCount(len(members[0]))
     table_obj.setHorizontalHeaderLabels(['First name', 'Last name', 'Email'])
     table_obj.setRowCount(len(members))

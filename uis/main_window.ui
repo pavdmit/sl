@@ -445,7 +445,7 @@ QComboBox::drop-down
         </rect>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="team_page"/>
        <widget class="QWidget" name="workspaces_page">
@@ -1248,7 +1248,7 @@ color:rgb(43,59,78);</string>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="add_proj_btn">
             <property name="minimumSize">
              <size>
               <width>40</width>

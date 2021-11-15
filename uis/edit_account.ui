@@ -82,7 +82,7 @@ border-radius: 15px;</string>
      <property name="geometry">
       <rect>
        <x>220</x>
-       <y>10</y>
+       <y>7</y>
        <width>121</width>
        <height>20</height>
       </rect>
@@ -113,6 +113,12 @@ color:rgb(43,59,78);</string>
       </property>
       <item>
        <widget class="QLineEdit" name="email_edit_line">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="mouseTracking">
          <bool>false</bool>
         </property>
@@ -130,6 +136,12 @@ color:rgb(43,59,78);</string>
       </item>
       <item>
        <widget class="QLineEdit" name="password_edit_line">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -141,6 +153,12 @@ color:rgb(43,59,78);</string>
       </item>
       <item>
        <widget class="QLineEdit" name="fname_edit_line">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -152,6 +170,12 @@ color:rgb(43,59,78);</string>
       </item>
       <item>
        <widget class="QLineEdit" name="phnumber_edit_line">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -163,6 +187,12 @@ color:rgb(43,59,78);</string>
       </item>
       <item>
        <widget class="QLineEdit" name="lname_edit_line">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -174,6 +204,12 @@ color:rgb(43,59,78);</string>
       </item>
       <item>
        <widget class="QLineEdit" name="gender_edit_line">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -188,9 +224,9 @@ color:rgb(43,59,78);</string>
     <widget class="QWidget" name="verticalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>90</x>
        <y>30</y>
-       <width>96</width>
+       <width>108</width>
        <height>171</height>
       </rect>
      </property>
@@ -269,7 +305,7 @@ color:rgb(43,59,78);</string>
        <x>220</x>
        <y>220</y>
        <width>113</width>
-       <height>25</height>
+       <height>26</height>
       </rect>
      </property>
      <property name="styleSheet">

@@ -55,6 +55,29 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QLineEdit" name="text_fragment_input">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+	border: 1px solid rgb(179, 179, 179);
+	border-radius:10px;
+	color:rgb(43,59,78);
+}</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="position_input">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -66,6 +89,12 @@
      </item>
      <item>
       <widget class="QLineEdit" name="label_input">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);
@@ -117,7 +146,7 @@ border-radius: 15px;
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>24</height>
+         <height>26</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -144,7 +173,7 @@ QPushButton:hover {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>24</height>
+         <height>26</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -186,6 +215,17 @@ color:rgb(43,59,78);</string>
        </property>
        <property name="text">
         <string>Text fragment</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="styleSheet">
+        <string notr="true">font: 13pt &quot;Andale Mono&quot;;
+color:rgb(43,59,78);</string>
+       </property>
+       <property name="text">
+        <string>Position</string>
        </property>
       </widget>
      </item>
@@ -270,22 +310,6 @@ QPushButton:hover {
      </item>
     </layout>
    </widget>
-   <widget class="QTextBrowser" name="text">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>420</width>
-      <height>700</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-border-radius:15px;
-font: 10pt &quot;Andale Mono&quot;;
-color:rgb(43,59,78);</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
@@ -301,6 +325,22 @@ color:rgb(43,59,78);</string>
     </property>
     <property name="text">
      <string>Text name:</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="text">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>40</y>
+      <width>441</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+border-radius:15px;
+font: 10pt &quot;Andale Mono&quot;;
+color:rgb(43,59,78);</string>
     </property>
    </widget>
   </widget>

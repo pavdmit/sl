@@ -111,6 +111,12 @@ color:rgb(43,59,78);</string>
      </item>
      <item>
       <widget class="QLineEdit" name="email_input">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
 	border: 1px solid rgb(179, 179, 179);

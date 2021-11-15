@@ -102,18 +102,55 @@ class TextLabelWindow(QWidget):
         super(TextLabelWindow, self).__init__()
         path_to_ui = Path(Path.cwd(), 'uis', 'texts_label_window.ui')
         loadUi(path_to_ui, self)
+        self.dataset_name = dataset_name
         self.current_file = fill_text_label_elements(self.texts_list, self.list_of_labels, self.text, dataset_name)
         self.save_btn.clicked.connect(lambda: save_text_label(self.current_file, self.text_fragment_input,
                                                               self.label_input))
         self.save_btn.clicked.connect(lambda: fill_text_label_elements(self.texts_list, self.list_of_labels, self.text,
                                                                        dataset_name))
-        self.addnew_btn.clicked.connect(add_text_label)
         self.list_of_labels.setColumnWidth(0, 170)
         self.list_of_labels.setColumnWidth(1, 100)
         self.delete_btn.clicked.connect(lambda: delete_text_label(self.list_of_labels.currentItem().text()))
         self.delete_btn.clicked.connect(
             lambda: fill_text_label_elements(self.texts_list, self.list_of_labels, self.text,
                                              dataset_name))
+        self.text.cursorPositionChanged.connect(lambda: self.changed(self.text))
+        self.text.selectionChanged.connect(lambda: self.edit(self.text))
+        self.addnew_btn.clicked.connect(self.open_file)
+        self.texts_list.activated[str].connect(lambda: fill_text_label_elements(self.texts_list, self.list_of_labels,
+                                                                                self.text, self.dataset_name,
+                                                                                self.texts_list.currentText()))
+
+    def open_file(self):
+        try:
+            file_name = QFileDialog.getOpenFileName()
+            path = file_name[0]
+            file_name = os.path.basename(path)
+            with open(path) as f:
+                file = f.readlines()
+            # print(file)
+            add_text_file(file_name, file[0], self.dataset_name)
+            fill_text_label_elements(self.texts_list, self.list_of_labels, self.text, self.dataset_name)
+        except:
+            pass
+
+    def edit(self, text):
+        cursor = text.textCursor()
+        print(cursor.selectionStart(), "   ", cursor.selectionEnd())
+
+    def changed(self, text):
+        print(text.textCursor().position())
+
+
+class AddProject(QWidget):
+    def __init__(self, workspace_name):
+        super(AddProject, self).__init__()
+        path_to_ui = Path(Path.cwd(), 'uis', 'add_project_dialog.ui')
+        loadUi(path_to_ui, self)
+        self.save_btn.clicked.connect(self.add_project)
+
+    def add_project(self):
+        add_dataset(self.dataset_name_input.text(), self.task_type_input.text(), self.description_input.text())
 
 
 class InviteWindow(QWidget):
@@ -191,12 +228,13 @@ class Account(QMainWindow):
         self.window_widget = None
         self.edit_window = None
         self.invite_window = None
+        self.add_window = None
         user_data = load_user_account(user_id)
-        self.user_photo1.setText(str(user_data[1][0]+user_data[3][0]))
-        self.user_photo2.setText(str(user_data[1][0]+user_data[3][0]))
-        self.user_photo3.setText(str(user_data[1][0]+user_data[3][0]))
-        self.user_photo4.setText(str(user_data[1][0]+user_data[3][0]))
-        self.user_photo5.setText(str(user_data[1][0]+user_data[3][0]))
+        self.user_photo1.setText(str(user_data[1][0] + user_data[3][0]))
+        self.user_photo2.setText(str(user_data[1][0] + user_data[3][0]))
+        self.user_photo3.setText(str(user_data[1][0] + user_data[3][0]))
+        self.user_photo4.setText(str(user_data[1][0] + user_data[3][0]))
+        self.user_photo5.setText(str(user_data[1][0] + user_data[3][0]))
 
         # Initial window settings
         team_names = get_team_names(user_id)
@@ -211,6 +249,11 @@ class Account(QMainWindow):
         fill_projects(self.datasets_table, self.workspace_name)
         fill_image_files(self.image_files_table, self.workspace_name)
         fill_text_files(self.text_files_table, self.workspace_name)
+        self.image_files_table.setColumnWidth(0, 300)
+        self.image_files_table.setColumnWidth(1, 280)
+        self.text_files_table.setColumnWidth(0, 150)
+        self.text_files_table.setColumnWidth(1, 350)
+        self.text_files_table.setColumnWidth(2, 350)
         self.datasets_table.setColumnWidth(0, 250)
         self.datasets_table.setColumnWidth(1, 250)
         self.datasets_table.setColumnWidth(2, 259)
@@ -248,6 +291,7 @@ class Account(QMainWindow):
                                                                  self.search_line.text()))
         self.search_btn.clicked.connect(lambda: fill_text_files(self.text_files_table, self.workspace_name,
                                                                 self.search_line.text()))
+        self.add_proj_btn.clicked.connect(self.add_project)
 
     def fill_workspaces(self):
         bottom_margin = 100
@@ -269,6 +313,13 @@ class Account(QMainWindow):
         self.window_widget = QtWidgets.QStackedWidget()
         self.window_widget.addWidget(self.edit_window)
         self.window_widget.show()
+
+    def add_project(self):
+        self.add_window = AddProject(self.workspace_name)
+        self.window_widget = QtWidgets.QStackedWidget()
+        self.window_widget.addWidget(self.add_window)
+        self.window_widget.show()
+        fill_projects(self.datasets_table, self.workspace_name)
 
     def open_editor(self, dataset_name):
         task_type = which_task_type(dataset_name)
