@@ -4,8 +4,8 @@ import psycopg2
 from random import randint
 from PIL.ImageQt import ImageQt
 from PIL.Image import Image
-import io
-import base64
+import csv
+import xlsxwriter
 from PyQt5.QtGui import QPixmap
 from pathlib import Path
 from PIL import Image, ImageDraw
@@ -51,44 +51,43 @@ def save_account_changes(user_id, email_edit_line, password_edit_line, fname_edi
     con.commit()
 
 
-def fill_text_label_elements(texts_list, list_of_labels, text_label, dataset_name, current_file_name=None):
+def get_text_files_names(dataset_name):
     cur.execute("SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}'".format(dataset_name))
     file_names = cur.fetchall()
     file_names = [file_names[i][0] for i in range(len(file_names))]
     if len(file_names) == 0:
         file_names.append("No texts")
-    texts_list.clear()
-    texts_list.addItems(file_names)
-    if current_file_name is None:
-        current_file_name = file_names[0]
-    cur.execute("SELECT text_fragment, label FROM text_files_labels WHERE file_name = '{}'".format(current_file_name))
+    return file_names
+
+
+def fill_text_label_elements(list_of_labels, text_label, current_file_name):
+    cur.execute("SELECT text_fragment, label, position FROM text_files_labels WHERE file_name = '{}'".format(current_file_name))
     label_with_text = cur.fetchall()
     if len(label_with_text) == 0:
-        label_with_text.append(("No text", "No label"))
+        label_with_text.append(("No text", "No label", "No pos"))
     list_of_labels.setColumnCount(len(label_with_text[0]))
-    list_of_labels.setHorizontalHeaderLabels(['Text', 'Label'])
+    list_of_labels.setHorizontalHeaderLabels(['Text', 'Label', 'Pos'])
     list_of_labels.setRowCount(len(label_with_text))
     k = 0
-    print(current_file_name)
     for row in label_with_text:
         for i in range(len(row)):
             list_of_labels.setItem(k, i, QTableWidgetItem(str(row[i])))
         k += 1
     list_of_labels.verticalHeader().setVisible(False)
-    if label_with_text[0] != ("No text", "No label"):
-        cur.execute("SELECT text FROM text_files WHERE file_name = '{}'".format(current_file_name))
-        text = cur.fetchall()
-        print(text)
-        text = text[0][0]
-        text_label.setText(text)
-    return current_file_name
+    cur.execute("SELECT text FROM text_files WHERE file_name = '{}'".format(current_file_name))
+    text = cur.fetchall()
+    text = text[0][0]
+    text_label.setText(text)
 
 
-def save_text_label(file_name, text_fragment_input, label_input):
-    cur.execute("INSERT INTO text_files_labels VALUES ('{}','{}','{}')".format(file_name, text_fragment_input.text(),
-                                                                               label_input.text()))
+def save_text_label(file_name, text_fragment_input, position_input, label_input):
+    cur.execute("INSERT INTO text_files_labels VALUES ('{}','{}','{}','{}')".format(file_name,
+                                                                                    text_fragment_input.text(),
+                                                                                    label_input.text(),
+                                                                                    position_input.text()))
     text_fragment_input.setText("")
     label_input.setText("")
+    position_input.setText("")
     con.commit()
 
 
@@ -100,12 +99,45 @@ def add_text_file(file_name, file, dataset_name):
 
 
 def delete_text_label(text_fragment_to_delete):
-    cur.execute("DELETE FROM text_files WHERE text_fragment = '{}'".format(text_fragment_to_delete))
+    cur.execute("DELETE FROM text_files_labels WHERE text_fragment = '{}'".format(text_fragment_to_delete))
     con.commit()
 
 
 def add_dataset(dataset_name_input, task_type_input, description_input):  # TODO
     pass
+
+
+def import_to_csv(dataset_name, file_name="output.csv"):
+    cur.execute("SELECT file_name, x1, y1, x2, y2, class, image_width, image_height FROM image_files WHERE file_name "
+                "IN (SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}')".format(dataset_name))
+    image_data = cur.fetchall()
+    header = ['file_name', 'x1', 'y1', 'x2', 'y2', 'class', 'image_width', 'image_height']
+    file_path = Path(Path.cwd(), 'output data', file_name)
+    with open(file_path, 'w', encoding='UTF8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        writer.writerows(image_data)
+
+
+def import_to_excel(dataset_name, file_name="output.xlsx"):
+    cur.execute("SELECT file_name, x1, y1, x2, y2, class, image_width, image_height FROM image_files WHERE file_name "
+                "IN (SELECT file_name FROM dataset_to_file WHERE dataset_name = '{}')".format(dataset_name))
+    image_data = cur.fetchall()
+    file_path = Path(Path.cwd(), 'output data', file_name)
+    file = xlsxwriter.Workbook(file_path)
+    worksheet = file.add_worksheet("Image data")
+    row = 0
+    for elem in image_data:
+        worksheet.write(row, 0, elem[0])
+        worksheet.write(row, 1, elem[1])
+        worksheet.write(row, 2, elem[2])
+        worksheet.write(row, 3, elem[3])
+        worksheet.write(row, 4, elem[4])
+        worksheet.write(row, 5, elem[5])
+        worksheet.write(row, 6, elem[6])
+        worksheet.write(row, 7, elem[7])
+        row += 1
+    file.close()
 
 
 def fill_image_files(table_obj, workspace_name, query=None):

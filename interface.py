@@ -70,6 +70,8 @@ class ImagesLabelWindow(QWidget):
             lambda: fill_image_file_params(self.list_of_files.currentItem().text(), self.picture, self.x1_input,
                                            self.y1_input, self.x2_input, self.y2_input, self.class_input))
         self.addnew_btn.clicked.connect(self.open_file)
+        self.import_to_csv_btn.clicked.connect(lambda: import_to_csv(dataset_name))
+        self.import_to_excel_btn.clicked.connect(lambda: import_to_excel(dataset_name))
 
     def open_file(self):
         try:
@@ -103,23 +105,23 @@ class TextLabelWindow(QWidget):
         path_to_ui = Path(Path.cwd(), 'uis', 'texts_label_window.ui')
         loadUi(path_to_ui, self)
         self.dataset_name = dataset_name
-        self.current_file = fill_text_label_elements(self.texts_list, self.list_of_labels, self.text, dataset_name)
-        self.save_btn.clicked.connect(lambda: save_text_label(self.current_file, self.text_fragment_input,
-                                                              self.label_input))
-        self.save_btn.clicked.connect(lambda: fill_text_label_elements(self.texts_list, self.list_of_labels, self.text,
-                                                                       dataset_name))
-        self.list_of_labels.setColumnWidth(0, 170)
-        self.list_of_labels.setColumnWidth(1, 100)
-        self.delete_btn.clicked.connect(lambda: delete_text_label(self.list_of_labels.currentItem().text()))
-        self.delete_btn.clicked.connect(
-            lambda: fill_text_label_elements(self.texts_list, self.list_of_labels, self.text,
-                                             dataset_name))
-        self.text.cursorPositionChanged.connect(lambda: self.changed(self.text))
-        self.text.selectionChanged.connect(lambda: self.edit(self.text))
-        self.addnew_btn.clicked.connect(self.open_file)
-        self.texts_list.activated[str].connect(lambda: fill_text_label_elements(self.texts_list, self.list_of_labels,
-                                                                                self.text, self.dataset_name,
+        files_names = get_text_files_names(self.dataset_name)
+        self.texts_list.addItems(files_names)
+        fill_text_label_elements(self.list_of_labels, self.text, self.texts_list.currentText())
+        self.texts_list.activated[str].connect(lambda: fill_text_label_elements(self.list_of_labels, self.text,
                                                                                 self.texts_list.currentText()))
+        self.text.selectionChanged.connect(lambda: self.fill_fields())
+        self.addnew_btn.clicked.connect(self.open_file)
+        self.save_btn.clicked.connect(lambda: save_text_label(self.texts_list.currentText(),
+                                                              self.text_fragment_input,
+                                                              self.position_input, self.label_input))
+        self.save_btn.clicked.connect(lambda: fill_text_label_elements(self.list_of_labels,
+                                                                       self.text,
+                                                                       self.texts_list.currentText()))
+        self.delete_btn.clicked.connect(lambda: delete_text_label(self.list_of_labels.currentItem().text()))
+        self.delete_btn.clicked.connect(lambda: fill_text_label_elements(self.list_of_labels,
+                                                                         self.text,
+                                                                         self.texts_list.currentText()))
 
     def open_file(self):
         try:
@@ -128,18 +130,18 @@ class TextLabelWindow(QWidget):
             file_name = os.path.basename(path)
             with open(path) as f:
                 file = f.readlines()
-            # print(file)
             add_text_file(file_name, file[0], self.dataset_name)
-            fill_text_label_elements(self.texts_list, self.list_of_labels, self.text, self.dataset_name)
+            added_file_name = get_text_files_names(self.dataset_name)
+            added_file_name = added_file_name[-1]
+            self.texts_list.addItem(added_file_name)
         except:
             pass
 
-    def edit(self, text):
-        cursor = text.textCursor()
-        print(cursor.selectionStart(), "   ", cursor.selectionEnd())
-
-    def changed(self, text):
-        print(text.textCursor().position())
+    def fill_fields(self):
+        text = self.text.toPlainText()
+        cursor = self.text.textCursor()
+        self.text_fragment_input.setText(text[cursor.selectionStart():cursor.selectionEnd()])
+        self.position_input.setText(str(cursor.selectionStart()))
 
 
 class AddProject(QWidget):
@@ -158,11 +160,7 @@ class InviteWindow(QWidget):
         super(InviteWindow, self).__init__()
         path_to_ui = Path(Path.cwd(), 'uis', 'invite_dialog.ui')
         loadUi(path_to_ui, self)
-        # self.invite_btn.clicked.connect(self.close_window)
         self.invite_btn.setShortcut('Ctrl+Return')
-
-    def close_window(self):
-        self.hide()
 
 
 class EditAccountWindow(QWidget):
